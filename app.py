@@ -1,12 +1,15 @@
 import sqlite3
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, flash, request
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '76bc3254cacc9d8d5d8e5461451b460e70dc4c8db9ee3d2d'
+
 
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
-    return conn 
+    return conn
+
 
 @app.route('/')
 def index():
@@ -14,3 +17,4 @@ def index():
     posts = conn.execute('SELECT * FROM posts').fetchall()
     conn.close()
     return render_template('index.html', posts=posts)
+
