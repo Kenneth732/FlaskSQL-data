@@ -48,9 +48,10 @@ def create():
 
     return render_template('create.html')
 
-@app.route('/<int:id>/edit/', methods=("GET", 'POST'))
+
+@app.route('/<int:id>/edit/', methods=('GET', 'POST'))
 def edit(id):
-    post = get_post(id) 
+    post = get_post(id)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -58,15 +59,17 @@ def edit(id):
 
         if not title:
             flash('Title is required!')
+
         elif not content:
             flash('Content is required!')
 
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE posts SET title = ?, content = ?' 'WHERE id = ?', (title, content, id))
-
+            conn.execute('UPDATE posts SET title = ?, content = ?'
+                         ' WHERE id = ?',
+                         (title, content, id))
             conn.commit()
             conn.close()
             return redirect(url_for('index'))
-        
-        return render_template('edit.html', post=post)
+
+    return render_template('edit.html', post=post)
